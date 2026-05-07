@@ -66,7 +66,7 @@ MAX_POINTS = 50
 
 rssi_series = deque(maxlen=MAX_POINTS)
 
-log_rows = deque(maxlen=100)
+log_rows = deque(maxlen=300)
 
 
 # ==================================================

@@ -237,7 +237,9 @@ function updateTable(logs){
 </script>
 
 <script>
-const socket = io();
+const socket = io(window.location.origin, {
+    transports: ["websocket", "polling"]
+});
 
 const chart = new Chart(document.getElementById('rssiChart'), {
   type: 'line',
