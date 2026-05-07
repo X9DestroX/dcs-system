@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDS System - Admin Login</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+
+    body {
+      background: #f5f7ff;
+      font-family: 'Book Antiqua', 'Georgia', serif;
+    }
+
+    .input-focus:focus {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .floating-shape {
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-15px) rotate(3deg);
+      }
+    }
+
+    .pulse-dot {
+      animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%, 100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+  </style>
+
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 md:p-8">
+
+  <!-- MAIN CARD -->
+  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+
+    <!-- LEFT -->
+    <div class="md:w-5/12 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 p-10 flex flex-col justify-between relative overflow-hidden text-white">
+
+      <!-- DECOR -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 floating-shape"></div>
+
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 floating-shape"
+      style="animation-delay: 3s;"></div>
+
+      <div class="absolute top-1/2 left-1/2 w-32 h-32 bg-white/5 rounded-full floating-shape"
+      style="animation-delay: 1.5s;"></div>
+
+      <!-- LOGO -->
+      <div class="relative z-10">
+
+        <div class="bg-white/20 backdrop-blur-sm p-3 rounded-2xl inline-block mb-6">
+          <img src="/static/img/logo_DCS.png"
+          alt="IDS Logo"
+          class="h-12 w-auto">
+        </div>
+
+        <h2 class="text-2xl font-bold tracking-wide">
+          IDS SYSTEM
+        </h2>
+
+        <p class="text-blue-100 text-sm mt-1">
+          Intrusion Detection & Monitoring
+        </p>
+
+      </div>
+
+      <!-- FEATURES -->
+      <div class="relative z-10 space-y-4 my-8">
+
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl p-3">
+
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-shield-alt text-lg"></i>
+          </div>
+
+          <div>
+            <p class="font-semibold text-sm">
+              Full System Control
+            </p>
+
+            <p class="text-blue-100 text-xs">
+              Manage alerts, exports & settings
+            </p>
+          </div>
+
+        </div>
+
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl p-3">
+
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-users-cog text-lg"></i>
+          </div>
+
+          <div>
+            <p class="font-semibold text-sm">
+              User Management
+            </p>
+
+            <p class="text-blue-100 text-xs">
+              Create & manage viewer accounts
+            </p>
+          </div>
+
+        </div>
+
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl p-3">
+
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-chart-line text-lg"></i>
+          </div>
+
+          <div>
+            <p class="font-semibold text-sm">
+              Real-time Analytics
+            </p>
+
+            <p class="text-blue-100 text-xs">
+              Live threat monitoring & logs
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STATUS -->
+      <div class="relative z-10">
+
+        <div class="flex items-center gap-2 text-sm">
+          <div class="w-2 h-2 bg-green-400 rounded-full pulse-dot"></div>
+
+          <span class="text-blue-100">
+            System Operational
+          </span>
+        </div>
+
+        <p class="text-blue-200/60 text-xs mt-4">
+          © 2026 DCS Technologies
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="md:w-7/12 p-10 flex flex-col justify-center slide-in">
+
+      <!-- HEADER -->
+      <div class="mb-8">
+
+        <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+          <i class="fas fa-user-shield"></i>
+          Administrator
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-800">
+          Welcome Back
+        </h1>
+
+        <p class="text-gray-400 text-sm mt-2">
+          Sign in to access the admin dashboard
+        </p>
+
+      </div>
+
+      <!-- FORM -->
+      <form id="loginForm" class="space-y-5">
+
+        <!-- USERNAME -->
+        <div>
+
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            Username
+          </label>
+
+          <div class="relative">
+
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-user text-gray-400"></i>
+            </div>
+
+            <input
+              type="text"
+              id="username"
+              autocomplete="username"
+              class="input-focus w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 text-sm transition-all duration-300 focus:bg-white focus:border-blue-400 outline-none"
+              placeholder="admin"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <!-- PASSWORD -->
+        <div>
+
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            Password
+          </label>
+
+          <div class="relative">
+
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-gray-400"></i>
+            </div>
+
+            <input
+              type="password"
+              id="password"
+              autocomplete="current-password"
+              class="input-focus w-full pl-11 pr-12 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 text-sm transition-all duration-300 focus:bg-white focus:border-blue-400 outline-none"
+              placeholder="••••••••"
+              required
+            >
+
+            <button
+              type="button"
+              onclick="togglePassword()"
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
+
+              <i class="fas fa-eye" id="eyeIcon"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- OPTIONS -->
+        <div class="flex items-center justify-between text-sm">
+
+          <label class="flex items-center gap-2 cursor-pointer group">
+
+            <input type="checkbox"
+            class="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-400 cursor-pointer">
+
+            <span class="text-gray-500 group-hover:text-gray-700 transition-colors">
+              Remember me
+            </span>
+
+          </label>
+
+          <a href="#"
+          class="text-blue-500 hover:text-blue-600 font-medium transition-colors text-xs">
+            Forgot password?
+          </a>
+
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          type="submit"
+          id="submitBtn"
+          class="w-full py-3.5 rounded-xl text-white font-bold text-sm bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-blue-200 flex items-center justify-center gap-2 group">
+
+          <span id="btnText">Sign In</span>
+
+          <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+
+        </button>
+
+      </form>
+
+      <!-- DIVIDER -->
+      <div class="relative my-6">
+
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200"></div>
+        </div>
+
+        <div class="relative flex justify-center text-xs">
+          <span class="bg-white px-4 text-gray-400">or</span>
+        </div>
+
+      </div>
+
+      <!-- VIEWER -->
+      <a href="/login-viewer"
+      class="flex items-center justify-center gap-2 w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold text-sm hover:border-emerald-300 hover:text-emerald-500 hover:bg-emerald-50 transition-all duration-300">
+
+        <i class="fas fa-eye"></i>
+        Login as Viewer
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+
+    function togglePassword() {
+
+      const input = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+
+      if (input.type === 'password') {
+
+        input.type = 'text';
+
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      }
+      else {
+
+        input.type = 'password';
+
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // ===== LOGIN =====
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+
+      const username =
+      document.getElementById('username').value.trim();
+
+      const password =
+      document.getElementById('password').value.trim();
+
+      // ===== VALIDATION =====
+      if (!username || !password) {
+
+        alert("Please enter username and password");
+
+        return;
+      }
+
+      btn.disabled = true;
+
+      btnText.innerHTML = "Authenticating...";
+
+      try {
+
+        const response = await fetch('/api/auth/login', {
+
+          method: 'POST',
+
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify({
+            role: 'admin',
+            username: username,
+            password: password
+          })
+
+        });
+
+        const data = await response.json();
+
+        if (data.success === true) {
+
+          window.location.href = '/dashboard';
+        }
+        else {
+
+          btn.disabled = false;
+
+          btnText.innerHTML = "Sign In";
+
+          alert(data.message || "Invalid Username or Password");
+        }
+
+      }
+      catch(error) {
+
+        console.error(error);
+
+        btn.disabled = false;
+
+        btnText.innerHTML = "Sign In";
+
+        alert("Server Connection Error");
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

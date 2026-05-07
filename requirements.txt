@@ -1,0 +1,8 @@
+Flask
+flask-socketio
+flask-login
+eventlet
+paho-mqtt
+firebase-admin
+Werkzeug
+gunicorn

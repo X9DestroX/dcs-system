@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IDS Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+  <style>
+    body {
+      background: #f5f7ff;
+      font-family: 'Book Antiqua', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="text-gray-800">
+<div class="max-w-7xl mx-auto p-6">
+  <!-- HEADER WITH LOGO -->
+  <div class="flex justify-between items-center mb-8">
+    <!-- LEFT: LOGO + TITLE -->
+    <div class="flex items-center gap-4">
+      <!-- LOGO -->
+      <img
+        src="/static/img/logo_DCS.png"
+        alt="IDS Logo"
+        class="h-14 md:h-20 w-auto drop-shadow-lg">
+      <!-- TEXT -->
+      <div>
+        <h1 class="text-3xl font-semibold tracking-wide">
+          IDS SYSTEM DASHBOARD
+        </h1>
+        <p class="text-sm text-gray-500" id="clock"></p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: STATUS -->
+    <div class="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm shadow">
+      <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+      Live Monitoring
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+
+    <div class="bg-white p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <p class="text-xs text-gray-500">Packets</p>
+      <h2 id="pkt" class="text-2xl font-semibold mt-1">0</h2>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <p class="text-xs text-gray-500">Avg RSSI</p>
+      <h2 id="avg" class="text-2xl font-semibold text-green-600 mt-1">0</h2>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <p class="text-xs text-gray-500">MAC Count</p>
+      <h2 id="macs" class="text-2xl font-semibold text-yellow-600 mt-1">0</h2>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <p class="text-xs text-gray-500">Threats</p>
+      <h2 id="threats" class="text-2xl font-semibold text-red-600 mt-1">0</h2>
+    </div>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- GRAPH -->
+    <div class="bg-white p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <h2 class="text-lg font-semibold mb-4">RSSI Signal</h2>
+      <div class="h-48">
+        <canvas id="rssiChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ALERT -->
+    <div class="bg-white p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <h2 class="text-lg font-semibold mb-4">Latest Alert</h2>
+
+      <div id="alertBox" class="p-4 rounded-lg bg-green-100 text-green-700 font-medium shadow-sm">
+        Waiting...
+      </div>
+
+      <div class="mt-4">
+        <div class="flex justify-between text-xs text-gray-500 mb-1">
+          <span>Threat Level</span>
+          <span id="threatPercent">0%</span>
+        </div>
+
+        <!--START HERE TO SEE-->
+<!-- BUTTONS -->
+<div class="mt-6 flex flex-col items-center gap-4">
+
+  <!-- FIRST ROW -->
+  <div class="grid grid-cols-3 gap-4 w-full max-w-2xl mx-auto">
+
+    <!-- Excel -->
+    <button onclick="exportExcel()" class="w-full py-3 rounded-full text-white font-bold
+    bg-gradient-to-r from-emerald-500 to-emerald-600
+    hover:from-emerald-600 hover:to-emerald-700
+    active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg">
+      Export Excel
+    </button>
+
+    <!-- PDF -->
+    <button onclick="exportPDF()" class="w-full py-3 rounded-full text-white font-bold
+    bg-[#FF706D]
+    hover:bg-red-600 active:bg-red-700
+    active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg">
+      Export PDF
+    </button>
+
+    <!-- Search -->
+    <button onclick="searchLogs()" class="w-full py-3 rounded-full text-white font-bold
+    bg-gradient-to-r from-blue-500 to-blue-600
+    hover:from-blue-600 hover:to-blue-700
+    active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg">
+      Search
+    </button>
+
+  </div>
+
+  <!-- SECOND ROW -->
+  <div class="grid grid-cols-2 gap-4 w-full max-w-lg mx-auto">
+
+    <!-- Filter -->
+    <button onclick="filterLogs()" class="w-full py-3 rounded-full text-white font-bold
+    bg-gradient-to-r from-yellow-500 to-yellow-600
+    hover:from-yellow-600 hover:to-yellow-700
+    active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg">
+      Filter
+    </button>
+
+    <!-- Sort -->
+    <button onclick="sortLogs()" class="w-full py-3 rounded-full text-white font-bold
+    bg-gradient-to-r from-purple-500 to-purple-600
+    hover:from-purple-600 hover:to-purple-700
+    active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg">
+      Sort
+    </button>
+
+  </div>
+
+</div>
+        </div>
+
+        <!--END HERE TO SEE-->
+      </div>
+
+    </div><br>
+
+    <!-- LOGS -->
+    <div class="bg-white p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:col-span-2">
+
+      <h2 class="text-xl font-semibold mb-4">Logs</h2>
+
+      <div class="overflow-x-auto rounded-xl border border-gray-200">
+
+        <table class="w-full text-sm">
+
+          <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wide">
+            <tr>
+              <th class="px-4 py-3 text-left">Date & Time</th>
+              <th class="px-4 py-3 text-left">SSID</th>
+              <th class="px-4 py-3 text-center">RSSI</th>
+              <th class="px-4 py-3 text-center">Severity</th>
+              <th class="px-4 py-3 text-left">Alerts</th>
+            </tr>
+          </thead>
+
+          <tbody id="logTable" class="divide-y divide-gray-100"></tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Keep your full existing UI -->
+
+<!-- First Script of the updated code-->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<!-- End of First Script of the updated code-->
+
+<script>
+const USER_ROLE = "{{ role }}";
+
+let filters = {search:"",severity:"",attack:"",sort:""};
+
+function searchLogs(){
+  let v = prompt("Enter MAC or SSID");
+  if(v){ filters.search=v; fetchLogs(); }
+}
+
+function filterLogs(){
+  let s = prompt("Severity (NORMAL/POTENTIAL/CRITICAL)");
+  let a = prompt("Attack (Flood/MAC/Signal)");
+  if(s) filters.severity=s.toUpperCase();
+  if(a) filters.attack=a;
+  fetchLogs();
+}
+
+function sortLogs(){
+  let s = prompt("Sort: time / severity");
+  if(s){ filters.sort=s; fetchLogs(); }
+}
+
+function fetchLogs(){
+  let url=`/api/logs?search=${filters.search}&severity=${filters.severity}&attack=${filters.attack}&sort=${filters.sort}`;
+  fetch(url).then(r=>r.json()).then(updateTable);
+}
+
+function updateTable(logs){
+  let table=document.getElementById("logTable");
+  table.innerHTML="";
+  logs.forEach(row=>{
+    table.innerHTML+=`
+      <tr>
+        <td>${row.time}</td>
+        <td>${row.ssid}</td>
+        <td>${row.rssi}</td>
+        <td>${row.severity}</td>
+        <td>${row.alerts.join(", ")}</td>
+      </tr>`;
+  });
+}
+</script>
+
+<script>
+const socket = io();
+
+const chart = new Chart(document.getElementById('rssiChart'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'RSSI',
+      data: [],
+      borderColor: '#3b82f6',
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false
+  }
+});
+
+socket.on("update", data => {
+
+  // GRAPH
+  chart.data.labels = data.rssi.map((_, i) => i);
+  chart.data.datasets[0].data = data.rssi;
+  chart.update();
+
+  // STATS
+  document.getElementById("pkt").innerText = data.logs.length;
+
+  let avg = data.rssi.reduce((a,b)=>a+b,0) / (data.rssi.length || 1);
+  document.getElementById("avg").innerText = avg.toFixed(1);
+
+  document.getElementById("macs").innerText =
+    new Set(data.logs.map(l=>l.mac)).size;
+
+  document.getElementById("threats").innerText =
+    data.logs.filter(l=>l.severity==="CRITICAL").length;
+
+  // ALERT BOX
+  let latest = data.latest;
+  let box = document.getElementById("alertBox");
+
+  box.innerText = latest.severity + " → " + (latest.alerts.join(", ") || "No Threat");
+
+  if (latest.severity === "CRITICAL") {
+    box.className = "p-4 rounded-lg bg-red-100 text-red-700 font-medium shadow-sm";
+  } else if (latest.severity === "POTENTIAL") {
+    box.className = "p-4 rounded-lg bg-yellow-100 text-yellow-700 font-medium shadow-sm";
+  } else {
+    box.className = "p-4 rounded-lg bg-green-100 text-green-700 font-medium shadow-sm";
+  }
+
+  // TABLE
+  let table = document.getElementById("logTable");
+  table.innerHTML = "";
+
+  data.logs.forEach(row => {
+
+  let sevColor = "text-green-600 font-semibold";
+  if(row.severity==="POTENTIAL") sevColor="text-yellow-600 font-semibold";
+  if(row.severity==="CRITICAL") sevColor="text-red-600 font-semibold";
+
+  let alertColor = row.alerts.length
+    ? (row.severity==="CRITICAL" ? "text-red-500"
+    : row.severity==="POTENTIAL" ? "text-yellow-500"
+    : "text-gray-500")
+    : "text-gray-400";
+
+  table.innerHTML += `
+    <tr>
+      <td class="px-4 py-2">${row.time}</td>
+      <td class="px-4 py-2">${row.ssid}</td>
+      <td class="px-4 py-2 text-center">${row.rssi}</td>
+      <td class="px-4 py-2 text-center ${sevColor}">${row.severity}</td>
+      <td class="px-4 py-2 ${alertColor}">
+        ${row.alerts.join(", ") || "No Alerts"}
+      </td>
+    </tr>`;
+});
+
+});
+</script>
+
+<!-- Second Script of the updated code-->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+
+    function exportExcel() {
+
+      let table = document.getElementById("logTable");
+
+      let workbook = XLSX.utils.table_to_book(table, {
+        sheet: "Logs"
+      });
+
+      XLSX.writeFile(workbook, "IDS_Logs.xlsx");
+    }
+
+    async function exportPDF() {
+
+      const { jsPDF } = window.jspdf;
+
+      let doc = new jsPDF();
+
+      doc.setFontSize(14);
+      doc.text("IDS Logs Report", 20, 20);
+
+      let rows = document.querySelectorAll("#logTable tr");
+
+      let y = 35;
+
+      rows.forEach((row) => {
+
+        let cols = row.querySelectorAll("td");
+
+        let text = "";
+
+        cols.forEach((col) => {
+          text += col.innerText + " | ";
+        });
+
+        doc.text(text, 10, y);
+        y += 10;
+
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+      });
+
+      doc.save("IDS_Logs.pdf");
+    }
+
+    </script>
+ <!-- End of Second Script of the updated code-->
+
+</body>
+</html>
