@@ -6,3 +6,4 @@ paho-mqtt
 firebase-admin
 Werkzeug
 gunicorn
+python-dotenv

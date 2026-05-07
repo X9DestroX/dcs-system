@@ -244,7 +244,7 @@ def api_logs():
 # ================== MAIN ==================
 if __name__ == "__main__":
     threading.Thread(target=mqtt_thread, daemon=True).start()
-    import os
+import os
 
 PORT = int(os.environ.get("PORT", 5000))
 
