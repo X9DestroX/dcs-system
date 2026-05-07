@@ -22,7 +22,7 @@ from firebase_admin import credentials, firestore
 
 # ================== CONFIG ==================
 BROKER = os.getenv("MQTT_SERVER")
-PORT = int(os.getenv("MQTT_PORT"))
+PORT = int(os.getenv("MQTT_PORT", 8883))
 
 USERNAME = os.getenv("MQTT_USER")
 PASSWORD = os.getenv("MQTT_PASS")
